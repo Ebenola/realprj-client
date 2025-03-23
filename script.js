@@ -186,11 +186,14 @@ if (window.location.pathname.endsWith('index.html') || window.location.pathname 
             document.getElementById('detailsPictures').innerHTML = property.pictures.map(url => `<img src="${url}" alt="Property" style="max-width: 200px;">`).join('');
 
             const [lat, lng] = property.location.split(',').map(Number);
-            map = new google.maps.Map(document.getElementById('detailsMap'), {
+            detailsMap = new google.maps.Map(document.getElementById('detailsMap'), {
                 center: { lat, lng },
                 zoom: 15,
+                mapTypeControl: true,
+                zoomControl: true,
+                streetViewControl: false,
             });
-            new google.maps.Marker({ position: { lat, lng }, map });
+            new google.maps.Marker({ position: { lat, lng }, map: detailsMap });
 
             if (property.model3d) {
                 scene = new THREE.Scene();
