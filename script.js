@@ -322,6 +322,23 @@ if (window.location.pathname.endsWith('seller.html') || window.location.pathname
         document.getElementById('retryModel3dVideo').value = '';
     }
 
+    function getDeviceLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const { latitude, longitude } = position.coords;
+                    document.getElementById('location').value = `${latitude},${longitude}`;
+                    showToast('Location set from device');
+                },
+                error => {
+                    showToast(`Error getting location: ${error.message}`, 'error');
+                }
+            );
+        } else {
+            showToast('Geolocation not supported by your browser', 'error');
+        }
+    }
+
     function uploadPictures() {
         cloudinary.openUploadWidget({
             cloudName: CLOUDINARY_CLOUD_NAME,
@@ -501,9 +518,24 @@ if (window.location.pathname.endsWith('seller.html') || window.location.pathname
                     <button class="delete" onclick="deleteProperty('${p._id}')">Delete</button>
                 </div>
             `).join('') || 'No properties listed.';
+
+            // Add maps to each property card
+            properties.forEach(p => {
+                const [lat, lng] = p.location.split(',').map(Number);
+                const map = new google.maps.Map(document.getElementById(`map-${p._id}`), {
+                    center: { lat, lng },
+                    zoom: 15,
+                    mapTypeControl: false,
+                    zoomControl: true,
+                    streetViewControl: false,
+                    disableDefaultUI: true,
+                });
+                new google.maps.Marker({ position: { lat, lng }, map });
+            });
+            
             if (properties.length) {
                 document.getElementById('sellerProperties').innerHTML += `
-                    <button onclick="promoteListings()">Promote Selected (500 NGN each)</button>
+                    <button onclick="promoteListings()">Promote Selected (2000 NGN each)</button>
                 `;
             }
         } catch (error) {
