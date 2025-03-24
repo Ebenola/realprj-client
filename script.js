@@ -1,4 +1,4 @@
-const BASE_URL = 'https://your-heroku-app.herokuapp.com/api'; // Update with Heroku URL
+const BASE_URL = 'https://real-server-pleendo-14e0fad1c7c3.herokuapp.com/api'; // Update with Heroku URL
 const CLOUDINARY_UPLOAD_PRESET = 'your-upload-preset';
 const CLOUDINARY_CLOUD_NAME = 'your-cloud-name';
 
